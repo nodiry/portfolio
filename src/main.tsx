@@ -18,11 +18,12 @@ createRoot(document.getElementById('root')!).render(
      <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/auth/signin" element={<SignIn />} />
-        <Route path="/auth/signup" element={<SignUp />} />
-        <Route path="/auth/twoauth" element={<TwoAuth />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/about" element={<AboutPage />} />
+        <Route path="/yoz" element={<HomePage />} />
+        <Route path="/blog/:id" element={<SignIn />} />
+        <Route path="/project/:id" element={<SignUp />} />
+        <Route path="/project" element={<TwoAuth />} />
+        <Route path="/blog" element={<Dashboard />} />
+        <Route path="/contact" element={<AboutPage />} />
         <Route path="*" element={<UnAvailable />} /> {/* Catch-all route */}
       </Routes>
     </Router>

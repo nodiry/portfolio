@@ -1,4 +1,4 @@
-import { words } from "@/textConfig";
+import { words } from "@/config/text";
 import NavBar from "../components/NavBar";
 
 const ServerError = () => {

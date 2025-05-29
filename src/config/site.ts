@@ -5,6 +5,7 @@ export const siteConfig = {
     blog: site + "blog/",
     project: site + "project/",
     media: site + "media",
+    latest: site + "latest",
   },
   en: {
     dashboard: "Glasscube",

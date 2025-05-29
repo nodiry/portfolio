@@ -4,6 +4,7 @@ import { Calendar, Clock, Tag, ArrowRight, User, Eye } from "lucide-react";
 import { Blog } from "@/config/types";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "@/lib/utils";
+import { site } from '@/config/site.ts';
 
 const NavigationOverlay = ({
   isVisible,
@@ -54,7 +55,7 @@ export const BlogCard = ({ blog }: { blog: Blog }) => {
           <motion.img
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
-            src={blog.thumbnail}
+            src={site+blog.thumbnail}
             alt={blog.title}
             className="w-full h-48 object-cover"
           />

@@ -20,10 +20,11 @@ import {
   FolderKanban,
   Mail,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const NavBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hoveredPath, setHoveredPath] = useState<string | null>(null);
   const { pathname } = useLocation();
 
   const navLinks = [
@@ -37,19 +38,57 @@ const NavBar = () => {
   return (
     <nav className="fixed top-0 left-0 w-full h-14 px-6 md:px-12 flex items-center justify-center backdrop-blur-md z-50 border-b">
       <img src="/logo.png" alt="logo" height={40} width={40} className="mx-2"/>
-      <div className="hidden md:flex md:flex-row items-center gap-6 relative">
+      
+      {/* Desktop Navigation */}
+      <div className="hidden md:flex md:flex-row items-center gap-2 relative">
         {navLinks.map(({ path, label, icon: Icon }) => {
           const isActive = pathname === path;
+          const isHovered = hoveredPath === path;
+          
           return (
             <div key={path} className="relative">
               <Link
                 to={path}
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-1 text-base px-2 py-1 transition hover:bg-gray-600 rounded-md"
+                onMouseEnter={() => setHoveredPath(path)}
+                onMouseLeave={() => setHoveredPath(null)}
+                className="flex items-center gap-1 text-base px-2 py-1 transition hover:bg-gray-600 rounded-md overflow-hidden"
               >
-                <Icon size={16} />
-                {label}
+                {/* Icon - always visible */}
+                <Icon size={16} className="flex-shrink-0" />
+                
+                {/* Label - animated on hover */}
+                <AnimatePresence mode="wait">
+                  {isHovered && (
+                    <motion.span
+                      initial={{ 
+                        width: 0, 
+                        opacity: 0,
+                        marginLeft: 0
+                      }}
+                      animate={{ 
+                        width: "auto", 
+                        opacity: 1,
+                        marginLeft: 4
+                      }}
+                      exit={{ 
+                        width: 0, 
+                        opacity: 0,
+                        marginLeft: 0
+                      }}
+                      transition={{ 
+                        duration: 0.4,
+                        ease: "easeInOut"
+                      }}
+                      className="whitespace-nowrap"
+                    >
+                      {label}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </Link>
+              
+              {/* Active indicator - remains the same */}
               {isActive && (
                 <motion.div
                   layoutId="active-underline"
@@ -61,6 +100,7 @@ const NavBar = () => {
           );
         })}
 
+        {/* Theme and language controls */}
         <div className="ml-12 flex items-center gap-4">
           <ModeToggle />
           <LangOption />
@@ -72,7 +112,7 @@ const NavBar = () => {
         GlassCube i/o
       </div>
 
-      {/* Mobile Right: Menu */}
+      {/* Mobile Right: Menu - unchanged */}
       <div className="md:hidden">
         <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
           <SheetTrigger asChild>

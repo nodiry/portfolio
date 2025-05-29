@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Calendar, ExternalLink, Github, Tag } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { site } from '@/config/site.ts';
 
 const NavigationOverlay = ({
   isVisible,
@@ -44,7 +45,7 @@ export const ProjectCard = ({ project }: { project: Project }) => {
           <motion.img
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
-            src={project.thumbnail}
+            src={site+project.thumbnail}
             alt={project.title}
             className="w-full h-48 object-cover"
           />

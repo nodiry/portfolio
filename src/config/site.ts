@@ -1,4 +1,4 @@
-export const site: string = "http://localhost:3044/";
+export const site: string = "https://api.glasscube.io/";
 export const CONTENT_TYPES = ["h2", "p", "img", "video", "code", "quote"];
 export const siteConfig = {
   links: {

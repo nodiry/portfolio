@@ -6,15 +6,20 @@ import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
 import Loader from "@/components/Loading";
 import { siteConfig } from "@/config/site";
-
+import { Blog } from "@/config/types";
 const handleGoBack = () => {
   // In real app: navigate(-1) or navigate('/blog')
   console.log("Going back...");
   window.history.back();
 };
 
+interface Content {
+  type: string;
+  data: string;
+}
+
 // Render different content types
-const renderContent = (contentItem, index) => {
+const renderContent = (contentItem: Content, index: any) => {
   const { type, data } = contentItem;
 
   switch (type) {
@@ -38,34 +43,16 @@ const renderContent = (contentItem, index) => {
     case "img":
       return (
         <div key={index} className="my-6">
-          <img
-            src={data.src}
-            alt={data.alt}
-            className="w-full rounded-lg shadow-lg"
-          />
-          {data.caption && (
-            <p className="text-sm text-muted-foreground text-center mt-2 italic">
-              {data.caption}
-            </p>
-          )}
+          <img src={data} alt={data} className="w-full rounded-lg shadow-lg" />
         </div>
       );
 
     case "video":
       return (
         <div key={index} className="my-6">
-          <video
-            controls
-            className="w-full rounded-lg shadow-lg"
-            src={data.src}
-          >
+          <video controls className="w-full rounded-lg shadow-lg" src={data}>
             Your browser doesn't support video playback.
           </video>
-          {data.caption && (
-            <p className="text-sm text-muted-foreground text-center mt-2 italic">
-              {data.caption}
-            </p>
-          )}
         </div>
       );
 
@@ -75,13 +62,11 @@ const renderContent = (contentItem, index) => {
           <div className="bg-muted rounded-lg p-4 overflow-x-auto">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs text-muted-foreground uppercase tracking-wide">
-                {data.language || "code"}
+                {data || "code"}
               </span>
             </div>
             <pre className="text-sm">
-              <code className="text-foreground font-mono">
-                {data.code || data}
-              </code>
+              <code className="text-foreground font-mono">{data || data}</code>
             </pre>
           </div>
         </div>
@@ -111,9 +96,9 @@ const renderContent = (contentItem, index) => {
 
 const BlogRenderer = () => {
   const { slug } = useParams(); // assumes route is like /blog/:slug
-  const [blog, setBlog] = useState(null);
+  const [blog, setBlog] = useState<Blog | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -137,7 +122,7 @@ const BlogRenderer = () => {
 
     fetchBlog();
   }, [slug]);
-
+  if (!blog) return;
   return (
     <div className="min-h-screen bg-background">
       {/* Dynamic backdrop */}

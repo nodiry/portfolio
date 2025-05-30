@@ -6,10 +6,14 @@ import { Badge } from "@/components/ui/badge";
 import Loader from "@/components/Loading";
 import { formatDate } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
-
+import { Project } from "@/config/types";
 const handleGoBack = () => window.history.back();
+interface Content {
+  type: string;
+  data: string;
+}
 
-const renderContent = (item, index) => {
+const renderContent = (item: Content, index: number) => {
   const { type, data } = item;
 
   switch (type) {
@@ -32,28 +36,19 @@ const renderContent = (item, index) => {
       return (
         <div key={index} className="my-6">
           <img
-            src={data.src}
-            alt={data.alt || "Project Image"}
+            src={data}
+            alt={data || "Project Image"}
             className="w-full rounded-lg shadow-lg"
           />
-          {data.caption && (
-            <p className="text-sm text-muted-foreground text-center mt-2 italic">
-              {data.caption}
-            </p>
-          )}
         </div>
       );
     case "video":
       return (
         <div key={index} className="my-6">
-          <video
-            controls
-            className="w-full rounded-lg shadow-lg"
-            src={data.src}
-          />
-          {data.caption && (
+          <video controls className="w-full rounded-lg shadow-lg" src={data} />
+          {data && (
             <p className="text-sm text-muted-foreground text-center mt-2 italic">
-              {data.caption}
+              {data}
             </p>
           )}
         </div>
@@ -62,12 +57,12 @@ const renderContent = (item, index) => {
       return (
         <div key={index} className="my-4">
           <a
-            href={data.href}
+            href={data}
             target="_blank"
             rel="noopener noreferrer"
             className="text-primary underline"
           >
-            {data.label || data.href}
+            {data || data}
           </a>
         </div>
       );
@@ -85,9 +80,9 @@ const renderContent = (item, index) => {
 
 const ProjectPage = () => {
   const { slug } = useParams();
-  const [project, setProject] = useState(null);
+  const [project, setProject] = useState<Project | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -111,7 +106,7 @@ const ProjectPage = () => {
 
     fetchProject();
   }, [slug]);
-
+  if (!project) return <div> No Project Details </div>;
   return (
     <div className="min-h-screen bg-background">
       {/* Blurred backdrop */}

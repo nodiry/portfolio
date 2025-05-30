@@ -19,28 +19,13 @@ import { ProjectCard } from "@/components/ProjectCard";
 import { siteConfig } from "@/config/site";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-
-type Blog = {
-  _id: string;
-  slug: string;
-  title: string;
-  summary: string;
-  [key: string]: any;
-};
-
-type Project = {
-  _id: string;
-  slug: string;
-  title: string;
-  description: string;
-  [key: string]: any;
-};
+import { Blog, Project } from "@/config/types";
 
 const LandingPage = () => {
   const navigate = useNavigate();
   const [latestBlogs, setLatestBlogs] = useState<Blog[]>([]);
   const [latestProjects, setLatestProjects] = useState<Project[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchLatestContent = async () => {

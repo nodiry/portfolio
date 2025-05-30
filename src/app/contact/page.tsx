@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Mail,
   Phone,
@@ -33,42 +33,46 @@ const ContactPage = () => {
     message: "",
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [submitStatus, setSubmitStatus] = useState<string | null>(null); // 'success' | 'error' | null
 
-  // Handle form input changes
-  const handleInputChange = (e) => {
+  // This function updates form data when an input changes
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
+
+    // Update the form state by keeping old values and changing only the one being edited
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus(null);
+  // This handles the form submit event
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // stop page refresh
+    setIsSubmitting(true); // set loading state
+    setSubmitStatus(null); // reset status (success or error)
 
     try {
-      // Simulate API call - replace with your actual endpoint
+      // Simulate an API call for 2 seconds (for testing)
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      // In real app, send to your contact API:
+      // Real API request example:
       // const response = await fetch('/api/contact', {
       //   method: 'POST',
       //   headers: { 'Content-Type': 'application/json' },
       //   body: JSON.stringify(formData)
       // });
 
-      setSubmitStatus("success");
-      setFormData({ name: "", email: "", subject: "", message: "" });
+      setSubmitStatus("success"); // show success
+      setFormData({ name: "", email: "", subject: "", message: "" }); // reset form
     } catch (error) {
-      setSubmitStatus("error");
+      setSubmitStatus("error"); // show error
       console.error("Contact form error:", error);
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false); // stop loading state
     }
   };
 

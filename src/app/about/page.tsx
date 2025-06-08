@@ -1,7 +1,6 @@
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ExternalLink } from "lucide-react";
+import ContactCard from "@/components/ContactCard";
 
 export default function AboutMePage() {
   return (
@@ -101,35 +100,7 @@ export default function AboutMePage() {
         systems.
       </p>
 
-      <h2 className="text-2xl font-semibold mb-2">🌍 Connect</h2>
-      <Card className="mb-4">
-        <CardContent className="p-4 space-y-2">
-          <a
-            href="https://github.com/nodiry"
-            className="flex items-center gap-2 text-blue-600 hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <ExternalLink className="w-4 h-4" /> GitHub
-          </a>
-          <a
-            href="https://linkedin.com/in/nodirbek-bokiev"
-            className="flex items-center gap-2 text-blue-600 hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <ExternalLink className="w-4 h-4" /> LinkedIn
-          </a>
-          <a
-            href="https://x.com/NodirbekBokiev"
-            className="flex items-center gap-2 text-blue-600 hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <ExternalLink className="w-4 h-4" /> X (Twitter)
-          </a>
-        </CardContent>
-      </Card>
+      <ContactCard />
     </div>
   );
 }

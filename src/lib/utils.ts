@@ -26,3 +26,4 @@ export const formatDate = (dateString: string | undefined) => {
     day: "numeric",
   });
 };
+export const handleGoBack = () => window.history.back();

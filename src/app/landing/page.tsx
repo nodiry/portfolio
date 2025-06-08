@@ -1,25 +1,14 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import {
-  Github,
-  Linkedin,
-  Mail,
-  Download,
-  Server,
-  Database,
-  Code2,
-  Globe,
-  MapPin,
-  GraduationCap,
-  Briefcase,
-  ChevronRight,
-} from "lucide-react";
+import { Mail,Download,Server,Database,Code2,Globe,MapPin,GraduationCap,Briefcase, ChevronRight } from "lucide-react";
 import { BlogCard } from "@/components/BlogCard";
 import { ProjectCard } from "@/components/ProjectCard";
 import { siteConfig } from "@/config/site";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Blog, Project } from "@/config/types";
+import { Button } from "@/components/ui/button";
+import { socialLinks } from "@/components/ContactCard";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -79,16 +68,17 @@ const LandingPage = () => {
         >
           {/* Hero Section */}
           <div className="text-center mb-20">
-            <motion.div variants={itemVariants} className="mb-8">
-              <div className="w-32 h-32 mx-auto rounded-full bg-muted flex items-center justify-center text-4xl font-bold shadow-xl">
-                YN
-              </div>
+            <motion.div
+              variants={itemVariants}
+              className="mb-8 mx-auto flex justify-center"
+            >
+              <img src="/me.png" alt="BN" className="rounded-full w-32 h-32" />
             </motion.div>
             <motion.h1
               variants={itemVariants}
               className="text-5xl md:text-7xl font-bold mb-6"
             >
-              Your Name
+              Bokiev Nodirbek
             </motion.h1>
             <motion.p
               variants={itemVariants}
@@ -117,14 +107,23 @@ const LandingPage = () => {
               variants={itemVariants}
               className="flex flex-wrap justify-center gap-4 mb-16"
             >
-              <button className="bg-primary text-primary-foreground px-8 py-3 rounded-full font-semibold flex items-center gap-2 transition hover:opacity-90 shadow">
-                <Download className="w-5 h-5" />
-                Download Resume
-              </button>
-              <button className="border border-border text-muted-foreground hover:bg-muted px-8 py-3 rounded-full font-semibold flex items-center gap-2 transition">
-                <Mail className="w-5 h-5" />
-                Contact Me
-              </button>
+              <a href="/resume.pdf" download>
+                <Button variant="default" className="flex gap-2 items-center">
+                  <Download className="w-5 h-5" />
+                  Download Resume
+                </Button>
+              </a>
+
+              <a
+                href="mailto:worknadir95@gmail.com?subject=Contact from Portfolio"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant="secondary" className="flex gap-2 items-center">
+                  <Mail className="w-5 h-5" />
+                  Contact Me
+                </Button>
+              </a>
             </motion.div>
           </div>
 
@@ -231,17 +230,21 @@ const LandingPage = () => {
             variants={itemVariants}
             className="flex justify-center gap-6 mt-20"
           >
-            {[Github, Linkedin, Mail].map((Icon, i) => (
-              <motion.a
-                key={i}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                href="#"
-                className="bg-muted p-3 rounded-full text-muted-foreground hover:text-primary hover:bg-muted-foreground/10 transition"
-              >
-                <Icon className="w-6 h-6" />
-              </motion.a>
-            ))}
+            {socialLinks.map((link, i) => {
+              const Icon = link.icon;
+              return (
+                <motion.a
+                  key={i}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  href={link.href}
+                  target="_blank"
+                  className="bg-muted p-3 rounded-full text-muted-foreground hover:text-primary hover:bg-muted-foreground/10 transition"
+                >
+                  <Icon className="w-6 h-6" />
+                </motion.a>
+              );
+            })}
           </motion.div>
         </motion.div>
       </div>

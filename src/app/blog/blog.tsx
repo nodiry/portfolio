@@ -3,22 +3,15 @@ import { useParams } from "react-router-dom";
 import { ArrowLeft, Calendar, User, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { formatDate } from "@/lib/utils";
+import { formatDate, handleGoBack } from "@/lib/utils";
 import Loader from "@/components/Loading";
 import { siteConfig } from "@/config/site";
 import { Blog } from "@/config/types";
-const handleGoBack = () => {
-  // In real app: navigate(-1) or navigate('/blog')
-  console.log("Going back...");
-  window.history.back();
-};
 
 interface Content {
   type: string;
   data: string;
 }
-
-// Render different content types
 const renderContent = (contentItem: Content, index: any) => {
   const { type, data } = contentItem;
 
@@ -95,7 +88,7 @@ const renderContent = (contentItem: Content, index: any) => {
 };
 
 const BlogRenderer = () => {
-  const { slug } = useParams(); // assumes route is like /blog/:slug
+  const { slug } = useParams(); 
   const [blog, setBlog] = useState<Blog | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -151,7 +144,6 @@ const BlogRenderer = () => {
           </div>
         ) : (
           <>
-            {/* Sticky back button */}
             <div className="sticky top-0 z-20 bg-background/80 backdrop-blur-sm border-b">
               <div className="container mx-auto px-4 py-4">
                 <Button

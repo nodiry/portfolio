@@ -1,20 +1,5 @@
-import { useState } from "react";
-import {
-  Mail,
-  Phone,
-  MapPin,
-  Send,
-  Github,
-  Linkedin,
-  Twitter,
-  ArrowLeft,
-  Clock,
-  CheckCircle,
-  AlertCircle,
-} from "lucide-react";
+import { Mail, Phone, MapPin, ArrowLeft, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Card,
   CardContent,
@@ -23,65 +8,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import ContactCard from "@/components/ContactCard";
+import { handleGoBack } from "@/lib/utils";
 
-// Form state management
 const ContactPage = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [submitStatus, setSubmitStatus] = useState<string | null>(null); // 'success' | 'error' | null
-
-  // This function updates form data when an input changes
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-
-    // Update the form state by keeping old values and changing only the one being edited
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  // This handles the form submit event
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // stop page refresh
-    setIsSubmitting(true); // set loading state
-    setSubmitStatus(null); // reset status (success or error)
-
-    try {
-      // Simulate an API call for 2 seconds (for testing)
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Real API request example:
-      // const response = await fetch('/api/contact', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(formData)
-      // });
-
-      setSubmitStatus("success"); // show success
-      setFormData({ name: "", email: "", subject: "", message: "" }); // reset form
-    } catch (error) {
-      setSubmitStatus("error"); // show error
-      console.error("Contact form error:", error);
-    } finally {
-      setIsSubmitting(false); // stop loading state
-    }
-  };
-
-  // Handle back navigation
-  const handleGoBack = () => {
-    window.history.back();
-  };
-
-  // Contact information
   const contactInfo = [
     {
       icon: Mail,
@@ -108,38 +38,9 @@ const ContactPage = () => {
       href: null,
     },
   ];
-
-  // Social links
-  const socialLinks = [
-    {
-      icon: Github,
-      label: "GitHub",
-      href: "https://github.com/nodiry",
-      color: "hover:text-slate-700",
-    },
-    {
-      icon: Linkedin,
-      label: "LinkedIn",
-      href: "https://linkedin.com/in/nodirbek-bokiev",
-      color: "hover:text-blue-600",
-    },
-    {
-      icon: Twitter,
-      label: "Twitter",
-      href: "https://twitter.com/NodirbekBokiev",
-      color: "hover:text-blue-400",
-    },
-  ];
-
   return (
     <div className="min-h-screen bg-background">
-      {/* Subtle gradient background */}
-      <div className="fixed inset-0 bg-gradient-to-br from-gray-400 via-white to-slate-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-800" />
-
-      {/* Main content */}
       <div className="relative z-10 mt-16">
-        {/* Header with back button */}
-
         <Button
           variant="ghost"
           size="sm"
@@ -151,7 +52,6 @@ const ContactPage = () => {
         </Button>
 
         <div className="container mx-auto px-4 py-12 max-w-6xl">
-          {/* Header section */}
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
               Let's Work Together
@@ -162,210 +62,46 @@ const ContactPage = () => {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* Contact Form */}
+          <div className="grid lg:grid-cols-2 gap-12 space-y-8">
             <Card className="shadow-lg">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Send className="w-5 h-5" />
-                  Send Message
-                </CardTitle>
+                <CardTitle>Contact Information</CardTitle>
                 <CardDescription>
-                  Fill out the form below and I'll get back to you as soon as
-                  possible.
+                  Here's how you can reach me directly
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Name and Email row */}
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label
-                        htmlFor="name"
-                        className="text-sm font-medium text-foreground"
-                      >
-                        Name *
-                      </label>
-                      <Input
-                        id="name"
-                        name="name"
-                        type="text"
-                        placeholder="Your full name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        required
-                        disabled={isSubmitting}
-                      />
+              <CardContent className="space-y-4">
+                {contactInfo.map((item, index) => {
+                  const Icon = item.icon;
+                  const content = (
+                    <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                      <div className="flex-shrink-0">
+                        <Icon className="w-5 h-5 text-muted-foreground" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-foreground">
+                          {item.label}
+                        </p>
+                        <p className="text-sm text-muted-foreground truncate">
+                          {item.value}
+                        </p>
+                      </div>
                     </div>
-                    <div className="space-y-2">
-                      <label
-                        htmlFor="email"
-                        className="text-sm font-medium text-foreground"
-                      >
-                        Email *
-                      </label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="your.email@example.com"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        required
-                        disabled={isSubmitting}
-                      />
-                    </div>
-                  </div>
+                  );
 
-                  {/* Subject */}
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="subject"
-                      className="text-sm font-medium text-foreground"
-                    >
-                      Subject *
-                    </label>
-                    <Input
-                      id="subject"
-                      name="subject"
-                      type="text"
-                      placeholder="What's this about?"
-                      value={formData.subject}
-                      onChange={handleInputChange}
-                      required
-                      disabled={isSubmitting}
-                    />
-                  </div>
-
-                  {/* Message */}
-                  <div className="space-y-2">
-                    <label
-                      htmlFor="message"
-                      className="text-sm font-medium text-foreground"
-                    >
-                      Message *
-                    </label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      placeholder="Tell me about your project, timeline, budget, or any questions you have..."
-                      rows={6}
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      required
-                      disabled={isSubmitting}
-                      className="resize-none"
-                    />
-                  </div>
-
-                  {/* Submit button */}
-                  <Button
-                    type="submit"
-                    className="w-full"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                        Sending...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4 mr-2" />
-                        Send Message
-                      </>
-                    )}
-                  </Button>
-
-                  {/* Status messages */}
-                  {submitStatus === "success" && (
-                    <div className="flex items-center gap-2 text-green-600 text-sm">
-                      <CheckCircle className="w-4 h-4" />
-                      Message sent successfully! I'll get back to you soon.
-                    </div>
-                  )}
-
-                  {submitStatus === "error" && (
-                    <div className="flex items-center gap-2 text-red-600 text-sm">
-                      <AlertCircle className="w-4 h-4" />
-                      Something went wrong. Please try again or email me
-                      directly.
-                    </div>
-                  )}
-                </form>
+                  return item.href ? (
+                    <a key={index} href={item.href} className="block">
+                      {content}
+                    </a>
+                  ) : (
+                    <div key={index}>{content}</div>
+                  );
+                })}
               </CardContent>
             </Card>
-
-            {/* Contact Information */}
             <div className="space-y-8">
-              {/* Contact Details */}
-              <Card className="shadow-lg">
-                <CardHeader>
-                  <CardTitle>Contact Information</CardTitle>
-                  <CardDescription>
-                    Here's how you can reach me directly
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {contactInfo.map((item, index) => {
-                    const Icon = item.icon;
-                    const content = (
-                      <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
-                        <div className="flex-shrink-0">
-                          <Icon className="w-5 h-5 text-muted-foreground" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-foreground">
-                            {item.label}
-                          </p>
-                          <p className="text-sm text-muted-foreground truncate">
-                            {item.value}
-                          </p>
-                        </div>
-                      </div>
-                    );
+              <ContactCard />
 
-                    return item.href ? (
-                      <a key={index} href={item.href} className="block">
-                        {content}
-                      </a>
-                    ) : (
-                      <div key={index}>{content}</div>
-                    );
-                  })}
-                </CardContent>
-              </Card>
-
-              {/* Social Links */}
-              <Card className="shadow-lg">
-                <CardHeader>
-                  <CardTitle>Connect With Me</CardTitle>
-                  <CardDescription>Find me on these platforms</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-4">
-                    {socialLinks.map((social, index) => {
-                      const Icon = social.icon;
-                      return (
-                        <a
-                          key={index}
-                          href={social.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`flex items-center gap-2 px-4 py-2 rounded-lg border border-border hover:border-primary transition-colors ${social.color}`}
-                        >
-                          <Icon className="w-4 h-4" />
-                          <span className="text-sm font-medium">
-                            {social.label}
-                          </span>
-                        </a>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Tech Stack */}
               <Card className="shadow-lg">
                 <CardHeader>
                   <CardTitle>Tech Stack</CardTitle>
@@ -387,7 +123,7 @@ const ContactPage = () => {
                       <Badge
                         key={index}
                         variant="secondary"
-                        className="text-xs"
+                        className="text-sm"
                       >
                         {tech}
                       </Badge>
@@ -397,23 +133,9 @@ const ContactPage = () => {
               </Card>
             </div>
           </div>
-
-          {/* Footer */}
-          <div className="mt-16 text-center">
-            <p className="text-muted-foreground">
-              Prefer email? Reach me directly at{" "}
-              <a
-                href="mailto:hello@yourname.dev"
-                className="text-primary hover:underline font-medium"
-              >
-                hello@yourname.dev
-              </a>
-            </p>
-          </div>
         </div>
       </div>
     </div>
   );
 };
-
 export default ContactPage;

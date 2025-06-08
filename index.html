@@ -4,7 +4,43 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Test</title>
+    <title>Bokiev Nodirbek</title>
+    <script>
+  (function () {
+    const analyticsServer = "https://track.glasscube.io/kj25";
+  
+    const getSessionId = () => {
+      const existing = localStorage.getItem("session_id");
+      if (existing) return existing;
+      const newId = "sess-" + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem("session_id", newId);
+      return newId;
+    };
+  
+    const getDeviceType = () => 
+      /Mobi|Android/i.test(navigator.userAgent) ? "mobile" : 
+      /Tablet|iPad/i.test(navigator.userAgent) ? "tablet" : "desktop";
+  
+    const sendAnalyticsData = () => {
+      const data = {
+        url: window.location.href,
+        referrer: document.referrer,
+        userAgent: navigator.userAgent,
+        timestamp: Date.now(),
+        loadTime: performance.now(),  // More accurate load time
+        session_id: getSessionId(),
+        deviceType: getDeviceType()
+      };
+      navigator.sendBeacon(analyticsServer, JSON.stringify(data));
+    };
+  
+    if (document.readyState === "complete") {
+      sendAnalyticsData();
+    } else {
+      window.addEventListener("load", sendAnalyticsData);
+    }
+  })();
+  </script>
   </head>
   <body>
     <div id="root"></div>

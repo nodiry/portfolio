@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import TabBar from "./TabBar";
 import HomeTab from "./Home";
 import SkillsTab from "./Skills";
-import HistoryTab from "./History";
+import AboutTab from "./History";
 import ProjectsTab from "./Projects";
 import ContactTab from "./Contact";
-import { playSound } from "../App";
+import { playSound, type Lang } from "../App";
 
-const TABS = ["Home", "Skills", "History", "Projects", "Contact"];
+const TABS = ["Home", "About", "Skills", "Projects", "Contact"];
 
-export default function Shell({ lang }: { lang: "en" | "ko" }) {
+export default function Shell({ lang }: { lang: Lang }) {
   const [currentTabIndex, setCurrentTabIndex] = useState(0);
 
   const handleKey = (e: KeyboardEvent) => {
@@ -32,13 +32,13 @@ export default function Shell({ lang }: { lang: "en" | "ko" }) {
       case 0:
         return <HomeTab lang={lang} />;
       case 1:
-        return <SkillsTab />;
+        return <AboutTab lang={lang} />;
       case 2:
-        return <HistoryTab lang={"en"} />;
+        return <SkillsTab lang={lang} />;
       case 3:
-        return <ProjectsTab lang={"en"} />;
+        return <ProjectsTab />;
       case 4:
-        return <ContactTab lang={"en"} />;
+        return <ContactTab lang={lang} />;
       default:
         return null;
     }

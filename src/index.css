@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+
+/* index.css */
+body {
+  @apply bg-black;
+}
+
+.text-terminal-green {
+  color: #00ff00;
+  text-shadow: 0 0 4px #00ff00, 0 0 10px #00ff00;
+}
